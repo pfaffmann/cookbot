@@ -1,4 +1,4 @@
-name: Deploy cookbot
+name: deploy cookbot
 on:
   push:
     branches: [main]
