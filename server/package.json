@@ -1,7 +1,7 @@
 {
   "name": "cookbot-server",
   "version": "1.0.0",
-  "description": "telegram bot",
+  "description": "telegram bot ",
   "main": "dist/index.js",
   "scripts": {
     "watch": "tsc -w",
