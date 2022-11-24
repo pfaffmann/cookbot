@@ -1,0 +1,11 @@
+{
+  "name": "cookbot",
+  "version": "1.0.0",
+  "description": "A bot which provides you with cooking receipts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "pfaffic",
+  "license": "ISC"
+}
