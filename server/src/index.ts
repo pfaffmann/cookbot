@@ -63,7 +63,7 @@ const main = async () => {
         const entities = ctx.message.text.split(' ');
         if (entities.length <= 1) throw new Error();
         const id = parseInt(entities[1]);
-        if (id === NaN) throw new Error();
+        if (isNaN(id)) throw new Error();
 
         const recipe = await Recipe.findOne({ where: { id } });
         if (!recipe) throw new Error();
