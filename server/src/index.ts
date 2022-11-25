@@ -13,9 +13,18 @@ const main = async () => {
 
     bot.start((ctx) => ctx.reply('Welcome. send "hi" to test the bot'));
     bot.help((ctx) =>
-      ctx.reply(`/neu <URL> | legt ein neues Rezept an
-    /zufall | Gibt ein zufälliges Rezept aus`)
+      ctx.reply(`/neu <URL> | Legt ein neues Rezept an.
+    /zufall | Gibt ein zufälliges Rezept aus.
+    /alle | Gibt alle Rezepte aus.`)
     );
+    bot.command('alle', async (ctx) => {
+      let reply = 'Alle gespeicherte Rezepte:\n';
+      const recipes = await Recipe.find();
+      recipes.map((recipe) => {
+        reply += `id: ${recipe.id} - Titel: ${recipe.title}\n`;
+      });
+      ctx.reply(reply);
+    });
     bot.command('neu', async (ctx) => {
       if (
         ctx &&
@@ -47,6 +56,7 @@ const main = async () => {
         ctx.reply('Fehler');
       }
     });
+
     //bot.on('sticker', (ctx) => ctx.reply('❤️'));
     //bot.hears('hi', (ctx) => ctx.reply(`Hello ${ctx.from.first_name}`));
     bot.launch();
