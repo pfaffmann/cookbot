@@ -23,7 +23,7 @@ const main = async () => {
       let reply = '';
       const recipes = await Recipe.find();
       recipes.map((recipe) => {
-        reply += `${recipe.url}\n`;
+        reply += `$id: {recipe.id} - ${recipe.url}\n`;
       });
       ctx.reply(reply);
     });
