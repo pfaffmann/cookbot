@@ -23,7 +23,7 @@ const main = async () => {
       let reply = '';
       const recipes = await Recipe.find();
       recipes.map((recipe) => {
-        reply += `$id: ${recipe.id} - ${recipe.url}\n`;
+        reply += `id: ${recipe.id} - ${recipe.url}\n`;
       });
       ctx.reply(reply);
     });
@@ -58,28 +58,17 @@ const main = async () => {
       }
     });
     bot.command('id', async (ctx) => {
-      if (
-        ctx &&
-        ctx.message &&
-        ctx.message.entities &&
-        ctx.message.entities.length > 1 &&
-        ctx.message.entities[1]
-      ) {
-        const entity = ctx.message.entities[1];
-        try {
-          const id = parseInt(
-            ctx.message.text.substring(
-              entity.offset,
-              entity.offset + entity.length
-            )
-          );
-          const recipe = await Recipe.findOneBy({ id });
-          if (!recipe) throw new Error();
-          ctx.reply(recipe.url);
-        } catch (error) {
-          ctx.reply('Keine gültige id eingegeben');
-        }
-      } else {
+      console.log(ctx.message);
+      try {
+        const entities = ctx.message.text.split(' ');
+        if (entities.length <= 1) throw new Error();
+        const id = parseInt(entities[1]);
+        if (id === NaN) throw new Error();
+
+        const recipe = await Recipe.findOne({ where: { id } });
+        if (!recipe) throw new Error();
+        ctx.reply(recipe.url);
+      } catch (error) {
         ctx.reply('Keine gültige id eingegeben');
       }
     });
