@@ -15,13 +15,23 @@ const main = async () => {
     bot.help((ctx) =>
       ctx.reply(`/neu <URL> | Legt ein neues Rezept an.
     /zufall | Gibt ein zufälliges Rezept aus.
-    /alle | Gibt alle Rezepte aus.`)
+    /alle | Gibt alle Rezepte aus.
+    /liste | Gibt eine Liste aller Rezepte aus.
+    /id <ID> | Gibt das Rezpt mit der jeweiligen id aus`)
     );
     bot.command('alle', async (ctx) => {
+      let reply = '';
+      const recipes = await Recipe.find();
+      recipes.map((recipe) => {
+        reply += `${recipe.url}\n`;
+      });
+      ctx.reply(reply);
+    });
+    bot.command('liste', async (ctx) => {
       let reply = 'Alle gespeicherte Rezepte:\n';
       const recipes = await Recipe.find();
       recipes.map((recipe) => {
-        reply += `id: ${recipe.id} - Titel: ${recipe.title}\n`;
+        reply += `id: ${recipe.id} - ${recipe.title}\n`;
       });
       ctx.reply(reply);
     });
@@ -45,6 +55,32 @@ const main = async () => {
         Titel: ${recipe.title}`);
       } else {
         ctx.reply('Keine gültige URL eingegeben');
+      }
+    });
+    bot.command('id', async (ctx) => {
+      if (
+        ctx &&
+        ctx.message &&
+        ctx.message.entities &&
+        ctx.message.entities.length > 1 &&
+        ctx.message.entities[1]
+      ) {
+        const entity = ctx.message.entities[1];
+        try {
+          const id = parseInt(
+            ctx.message.text.substring(
+              entity.offset,
+              entity.offset + entity.length
+            )
+          );
+          const recipe = await Recipe.findOneBy({ id });
+          if (!recipe) throw new Error();
+          ctx.reply(recipe.url);
+        } catch (error) {
+          ctx.reply('Keine gültige id eingegeben');
+        }
+      } else {
+        ctx.reply('Keine gültige id eingegeben');
       }
     });
     bot.command('zufall', async (ctx) => {
