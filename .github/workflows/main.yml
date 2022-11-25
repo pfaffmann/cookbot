@@ -29,6 +29,11 @@ jobs:
         with:
           envkey_COOKBOT_BOT_TOKEN: ${{ secrets.COOKBOT_BOT_TOKEN }}
           envkey_COOKBOT_BOT_NAME: ${{ secrets.COOKBOT_BOT_NAME }}
+          envkey_COOKBOT_MYSQL_USER: ${{ secrets.COOKBOT_MYSQL_USER }}
+          envkey_COOKBOT_MYSQL_PW: ${{ secrets.COOKBOT_MYSQL_PW }}
+          envkey_COOKBOT_MYSQL_HOST: ${{ secrets.COOKBOT_MYSQL_HOST }}
+          envkey_COOKBOT_MYSQL_PORT: ${{ secrets.COOKBOT_MYSQL_PORT }}
+          envkey_COOKBOT_MYSQL_DB: ${{ secrets.COOKBOT_MYSQL_DB }}
           directory: server
           file_name: .env
       - name: build server
