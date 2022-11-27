@@ -38,7 +38,6 @@ export const addUser = (bot: Telegraf<Context<Update>>) => {
 
     switch (command) {
       case denyUser:
-        userResolver.deleteUser(userId);
         ctx.telegram.sendMessage(
           userId,
           'Deine Anfrage wurde durch den Admin abgelehnt.'
