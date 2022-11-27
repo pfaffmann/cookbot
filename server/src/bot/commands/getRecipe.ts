@@ -8,7 +8,9 @@ export const getRecipe = (bot: Telegraf<Context<Update>>) => {
   bot.command('alle', async (ctx) => {
     try {
       if (!(await uR.isUserExisting(ctx.from.id)))
-        throw new Error('Benutzer nicht registriert.');
+        throw new Error(
+          'Benutzer nicht registriert. Tippe /help für mehr Informationen.'
+        );
       let reply = '';
       const recipes = await rR.getRecipes();
       recipes.map((recipe) => {
@@ -23,7 +25,7 @@ export const getRecipe = (bot: Telegraf<Context<Update>>) => {
     try {
       if (!(await uR.isUserExisting(ctx.from.id)))
         throw new Error(
-          'Benutzer nicht registriert. Tippe /help für mehr Informationen'
+          'Benutzer nicht registriert. Tippe /help für mehr Informationen.'
         );
       let reply = 'Alle gespeicherte Rezepte:\n';
       const recipes = await rR.getRecipes();
@@ -40,15 +42,15 @@ export const getRecipe = (bot: Telegraf<Context<Update>>) => {
     try {
       if (!(await uR.isUserExisting(ctx.from.id)))
         throw new Error(
-          'Benutzer nicht registriert. Tippe /help für mehr Informationen'
+          'Benutzer nicht registriert. Tippe /help für mehr Informationen.'
         );
       const entities = ctx.message.text.split(' ');
-      if (entities.length <= 1) throw new Error();
+      if (entities.length <= 1) throw new Error('Es wurde keine id übergeben.');
       const id = parseInt(entities[1]);
-      if (isNaN(id)) throw new Error();
+      if (isNaN(id)) throw new Error('Der übergebene Parameter ist keine id.');
 
       const recipe = await rR.getRecipe(id);
-      if (!recipe) throw new Error(`Kein Rezept mit id: ${id} vorhanden`);
+      if (!recipe) throw new Error(`Kein Rezept mit id: ${id} vorhanden.`);
       ctx.reply(recipe.url);
     } catch (error) {
       ctx.reply(error.message);
@@ -58,7 +60,7 @@ export const getRecipe = (bot: Telegraf<Context<Update>>) => {
     try {
       if (!(await uR.isUserExisting(ctx.from.id)))
         throw new Error(
-          'Benutzer nicht registriert. Tippe /help für mehr Informationen'
+          'Benutzer nicht registriert. Tippe /help für mehr Informationen.'
         );
       const recipe = await rR.getRandomRecipe();
       ctx.reply(recipe.url);
