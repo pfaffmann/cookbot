@@ -7,7 +7,7 @@ const rR = new RecipeResolver();
 export const getRecipe = (bot: Telegraf<Context<Update>>) => {
   bot.command('alle', async (ctx) => {
     try {
-      if (!(await uR.isUserExisting))
+      if (!(await uR.isUserExisting(ctx.from.id)))
         throw new Error('Benutzer nicht registriert.');
       let reply = '';
       const recipes = await rR.getRecipes();
@@ -21,7 +21,7 @@ export const getRecipe = (bot: Telegraf<Context<Update>>) => {
   });
   bot.command('liste', async (ctx) => {
     try {
-      if (!(await uR.isUserExisting))
+      if (!(await uR.isUserExisting(ctx.from.id)))
         throw new Error(
           'Benutzer nicht registriert. Tippe /help für mehr Informationen'
         );
@@ -38,7 +38,7 @@ export const getRecipe = (bot: Telegraf<Context<Update>>) => {
 
   bot.command('id', async (ctx) => {
     try {
-      if (!(await uR.isUserExisting))
+      if (!(await uR.isUserExisting(ctx.from.id)))
         throw new Error(
           'Benutzer nicht registriert. Tippe /help für mehr Informationen'
         );
@@ -56,7 +56,7 @@ export const getRecipe = (bot: Telegraf<Context<Update>>) => {
   });
   bot.command('zufall', async (ctx) => {
     try {
-      if (!(await uR.isUserExisting))
+      if (!(await uR.isUserExisting(ctx.from.id)))
         throw new Error(
           'Benutzer nicht registriert. Tippe /help für mehr Informationen'
         );
