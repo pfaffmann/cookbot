@@ -34,6 +34,7 @@ jobs:
           envkey_COOKBOT_MYSQL_HOST: ${{ secrets.COOKBOT_MYSQL_HOST }}
           envkey_COOKBOT_MYSQL_PORT: ${{ secrets.COOKBOT_MYSQL_PORT }}
           envkey_COOKBOT_MYSQL_DB: ${{ secrets.COOKBOT_MYSQL_DB }}
+          envkey_COOKBOT_ADMIN_TELEGRAM_ID: ${{ secrets.COOKBOT_ADMIN_TELEGRAM_ID }}
           directory: server
           file_name: .env
       - name: build server
