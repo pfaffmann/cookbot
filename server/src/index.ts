@@ -3,88 +3,33 @@ import { config as dotenvconfig } from 'dotenv';
 dotenvconfig();
 import { MysqlDataSource as DataSource } from './datasources/mysql';
 import { Telegraf } from 'telegraf';
-import { fetchTitle } from './lib/fetchTitle';
-import { Recipe } from './entities';
+import { addUser } from './bot/commands/addUser';
+import { addRecipe } from './bot/commands/addRecipe';
+import { getRecipe } from './bot/commands/getRecipe';
+import { UserResolver } from './resolvers';
+
+const helpUnregistered = `/registrieren | Um den Bot nutzen zu können muss man registriert sein.`;
+const helpRegistered = `/registrieren | Um den Bot nutzen zu können muss man registriert sein.
+/neu <URL> | Legt ein neues Rezept an.
+/zufall | Gibt ein zufälliges Rezept aus.
+/alle | Gibt alle Rezepte aus.
+/liste | Gibt eine Liste aller Rezepte aus.
+/id <ID> | Gibt das Rezpt mit der jeweiligen id aus`;
 
 const main = async () => {
-  try {
-    await DataSource.initialize();
-    const bot = new Telegraf(process.env.COOKBOT_BOT_TOKEN as string);
-
-    bot.start((ctx) => ctx.reply('Welcome. send "hi" to test the bot'));
-    bot.help((ctx) =>
-      ctx.reply(`/neu <URL> | Legt ein neues Rezept an.
-    /zufall | Gibt ein zufälliges Rezept aus.
-    /alle | Gibt alle Rezepte aus.
-    /liste | Gibt eine Liste aller Rezepte aus.
-    /id <ID> | Gibt das Rezpt mit der jeweiligen id aus`)
-    );
-    bot.command('alle', async (ctx) => {
-      let reply = '';
-      const recipes = await Recipe.find();
-      recipes.map((recipe) => {
-        reply += `id: ${recipe.id} - ${recipe.url}\n`;
-      });
-      ctx.reply(reply);
-    });
-    bot.command('liste', async (ctx) => {
-      let reply = 'Alle gespeicherte Rezepte:\n';
-      const recipes = await Recipe.find();
-      recipes.map((recipe) => {
-        reply += `id: ${recipe.id} - ${recipe.title}\n`;
-      });
-      ctx.reply(reply);
-    });
-    bot.command('neu', async (ctx) => {
-      if (
-        ctx &&
-        ctx.message &&
-        ctx.message.entities &&
-        ctx.message.entities.length > 1 &&
-        ctx.message.entities[1].type == 'url'
-      ) {
-        const entity = ctx.message.entities[1];
-        const url = ctx.message.text.substring(
-          entity.offset,
-          entity.offset + entity.length
-        );
-        const title = await fetchTitle(url);
-        const recipe = await Recipe.create({ url, title }).save();
-        ctx.reply(`Rezept wurde gespeichert.
-        ID: ${recipe.id}
-        Titel: ${recipe.title}`);
-      } else {
-        ctx.reply('Keine gültige URL eingegeben');
-      }
-    });
-    bot.command('id', async (ctx) => {
-      console.log(ctx.message);
-      try {
-        const entities = ctx.message.text.split(' ');
-        if (entities.length <= 1) throw new Error();
-        const id = parseInt(entities[1]);
-        if (isNaN(id)) throw new Error();
-
-        const recipe = await Recipe.findOne({ where: { id } });
-        if (!recipe) throw new Error();
-        ctx.reply(recipe.url);
-      } catch (error) {
-        ctx.reply('Keine gültige id eingegeben');
-      }
-    });
-    bot.command('zufall', async (ctx) => {
-      try {
-        const recipes = await Recipe.find();
-        const recipe = recipes[Math.floor(Math.random() * recipes.length)];
-        ctx.reply(recipe.url);
-      } catch (error) {
-        ctx.reply('Fehler');
-      }
-    });
-
-    //bot.on('sticker', (ctx) => ctx.reply('❤️'));
-    //bot.hears('hi', (ctx) => ctx.reply(`Hello ${ctx.from.first_name}`));
-    bot.launch();
-  } catch (error) {}
+  await DataSource.initialize();
+  const bot = new Telegraf(process.env.COOKBOT_BOT_TOKEN as string);
+  bot.start((ctx) => ctx.reply('Welcome. send "hi" to test the bot'));
+  bot.help(async (ctx) => {
+    const uR = new UserResolver();
+    const help = (await uR.isUserExisting(ctx.from.id))
+      ? helpRegistered
+      : helpUnregistered;
+    ctx.reply(help);
+  });
+  addUser(bot); //Befehl registrieren
+  addRecipe(bot); //Befehl neu
+  getRecipe(bot); //Befehle alle, liste, zufall, id
+  bot.launch();
 };
 main();

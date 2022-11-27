@@ -1,31 +1,24 @@
 import {
   Entity,
   PrimaryGeneratedColumn,
+  PrimaryColumn,
   Column,
   UpdateDateColumn,
   CreateDateColumn,
   DeleteDateColumn,
-  ManyToOne,
   BaseEntity,
 } from 'typeorm';
-import { User } from './User';
 
 @Entity()
-export class Recipe extends BaseEntity {
+export class Chat extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  title: string;
+  @PrimaryColumn()
+  telegramId: number;
 
   @Column()
-  url: string;
-
-  @Column({ nullable: true })
-  rating: number;
-
-  @ManyToOne(() => User, (user) => user.recipes)
-  user: User;
+  type: string;
 
   @CreateDateColumn()
   createdAt!: Date;
