@@ -17,7 +17,7 @@ export class RecipeResolver {
     if (!user) return;
     if (!urlScheme.safeParse(url).success) return;
     const title = await fetchTitle(url);
-    const recipe = Recipe.create({ url, title, user });
+    const recipe = Recipe.create({ url, title, user }).save();
     return recipe;
   }
 
