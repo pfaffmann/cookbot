@@ -16,7 +16,7 @@ export const getRecipe = (bot: Telegraf<Context<Update>>) => {
       });
       ctx.reply(reply);
     } catch (error) {
-      ctx.reply(error);
+      ctx.reply(error.message);
     }
   });
   bot.command('liste', async (ctx) => {
@@ -32,7 +32,7 @@ export const getRecipe = (bot: Telegraf<Context<Update>>) => {
       });
       ctx.reply(reply);
     } catch (error) {
-      ctx.reply(error);
+      ctx.reply(error.message);
     }
   });
 
@@ -48,10 +48,10 @@ export const getRecipe = (bot: Telegraf<Context<Update>>) => {
       if (isNaN(id)) throw new Error();
 
       const recipe = await rR.getRecipe(id);
-      if (!recipe) throw new Error();
+      if (!recipe) throw new Error(`Kein Rezept mit id: ${id} vorhanden`);
       ctx.reply(recipe.url);
     } catch (error) {
-      ctx.reply(error);
+      ctx.reply(error.message);
     }
   });
   bot.command('zufall', async (ctx) => {
@@ -63,7 +63,7 @@ export const getRecipe = (bot: Telegraf<Context<Update>>) => {
       const recipe = await rR.getRandomRecipe();
       ctx.reply(recipe.url);
     } catch (error) {
-      ctx.reply(error);
+      ctx.reply(error.message);
     }
   });
 };
