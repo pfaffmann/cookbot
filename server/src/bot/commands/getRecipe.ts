@@ -22,7 +22,9 @@ export const getRecipe = (bot: Telegraf<Context<Update>>) => {
   bot.command('liste', async (ctx) => {
     try {
       if (!(await uR.isUserExisting))
-        throw new Error('Benutzer nicht registriert.');
+        throw new Error(
+          'Benutzer nicht registriert. Tippe /help für mehr Informationen'
+        );
       let reply = 'Alle gespeicherte Rezepte:\n';
       const recipes = await rR.getRecipes();
       recipes.map((recipe) => {
@@ -37,7 +39,9 @@ export const getRecipe = (bot: Telegraf<Context<Update>>) => {
   bot.command('id', async (ctx) => {
     try {
       if (!(await uR.isUserExisting))
-        throw new Error('Benutzer nicht registriert.');
+        throw new Error(
+          'Benutzer nicht registriert. Tippe /help für mehr Informationen'
+        );
       const entities = ctx.message.text.split(' ');
       if (entities.length <= 1) throw new Error();
       const id = parseInt(entities[1]);
@@ -53,7 +57,9 @@ export const getRecipe = (bot: Telegraf<Context<Update>>) => {
   bot.command('zufall', async (ctx) => {
     try {
       if (!(await uR.isUserExisting))
-        throw new Error('Benutzer nicht registriert.');
+        throw new Error(
+          'Benutzer nicht registriert. Tippe /help für mehr Informationen'
+        );
       const recipe = await rR.getRandomRecipe();
       ctx.reply(recipe.url);
     } catch (error) {
