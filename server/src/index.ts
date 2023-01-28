@@ -6,6 +6,7 @@ import { Telegraf } from 'telegraf';
 import { addUser } from './bot/commands/addUser';
 import { addRecipe } from './bot/commands/addRecipe';
 import { getRecipe } from './bot/commands/getRecipe';
+import { deleteRecipe } from './bot/commands/deleteRecipe';
 import { UserResolver } from './resolvers';
 
 const helpUnregistered = `/registrieren | Um den Bot nutzen zu können muss man registriert sein.`;
@@ -31,6 +32,7 @@ const main = async () => {
   addUser(bot); //Befehl registrieren
   addRecipe(bot); //Befehl neu
   getRecipe(bot); //Befehle alle, liste, zufall, id
+  deleteRecipe(bot);
   bot.launch();
 };
 main();
