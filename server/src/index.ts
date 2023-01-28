@@ -14,7 +14,8 @@ const helpRegistered = `/registrieren | Um den Bot nutzen zu können muss man re
 /zufall | Gibt ein zufälliges Rezept aus.
 /alle | Gibt alle Rezepte aus.
 /liste | Gibt eine Liste aller Rezepte aus.
-/id <ID> | Gibt das Rezpt mit der jeweiligen id aus`;
+/id <ID> | Gibt das Rezpt mit der jeweiligen id aus.
+/entf <ID> | Löscht das Rezpt mit der angegebenen id aus der Liste.`;
 
 const main = async () => {
   await DataSource.initialize();

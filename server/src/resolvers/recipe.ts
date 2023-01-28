@@ -33,4 +33,11 @@ export class RecipeResolver {
     const recipes = await this.getRecipes();
     return recipes[Math.floor(Math.random() * recipes.length)];
   }
+
+  async deleteRecipe(id: number) {
+    const recipe = await this.getRecipe(id);
+    if (!recipe) return false;
+    await Recipe.remove([recipe]);
+    return true;
+  }
 }
