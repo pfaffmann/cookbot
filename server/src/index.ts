@@ -32,7 +32,7 @@ const main = async () => {
   addUser(bot); //Befehl registrieren
   addRecipe(bot); //Befehl neu
   getRecipe(bot); //Befehle alle, liste, zufall, id
-  deleteRecipe(bot);
+  deleteRecipe(bot); //Befehl entf
   bot.launch();
 };
 main();
